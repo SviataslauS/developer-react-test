@@ -1,18 +1,13 @@
 import React from "react";
-import { HighchartsWidget, HandsontableWidget } from "./widgets";
 import {
-  Alert,
   AppBar,
   Box,
   Button,
   Container,
-  Grid,
-  Link,
   Toolbar,
   Typography,
 } from "@mui/material";
-import * as dataSource from "./dataSources/versions.json";
-const { tableHeaders, tableData } = dataSource;
+import { HeatmapsPage } from "./pages/heatmaps";
 
 function App() {
   return (
@@ -48,48 +43,7 @@ function App() {
         </Toolbar>
       </AppBar>
       <Container sx={{ paddingTop: 3 }} maxWidth="xl">
-        <Grid container spacing={3}>
-          <Grid item lg={12}>
-            <Typography variant="h5" sx={{ marginBottom: 1 }}>
-              Highcharts Heatmap
-            </Typography>
-            <Alert severity="warning">
-              Please modify the highcharts-widget so that it returns a heatmap
-              using &nbsp;
-              <Link
-                href="https://www.npmjs.com/package/highcharts"
-                target="_blank"
-              >
-                highcharts
-              </Link>
-              .
-            </Alert>
-            <HighchartsWidget
-              tableHeaders={tableHeaders}
-              tableData={tableData}
-            />
-          </Grid>
-          <Grid item lg={12}>
-            <Typography variant="h5" sx={{ marginBottom: 1 }}>
-              Handsontable Heatmap
-            </Typography>
-            <Alert severity="warning">
-              Please modify the handsontable-widget so that it returns a heatmap
-              using &nbsp;
-              <Link
-                href="https://www.npmjs.com/package/handsontable"
-                target="_blank"
-                underline="hover"
-              >
-                handsontable
-              </Link>
-            </Alert>
-            <HandsontableWidget
-              tableHeaders={tableHeaders}
-              tableData={tableData}
-            />
-          </Grid>
-        </Grid>
+        <HeatmapsPage />
       </Container>
     </Box>
   );

@@ -9,8 +9,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { HeatmapProps } from "./Heatmap.props";
 
+
+interface HeatmapProps {
+  tableHeaders: Array<string>;
+  tableData: Array<Array<string | number>>;
+}
 export const HandsontableWidget = (props: HeatmapProps) => {
   const { tableData, tableHeaders } = props;
 
