@@ -1,45 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
 } from "@mui/material";
+import Highcharts from "highcharts";
+import HighchartsHeatmap from "highcharts/modules/heatmap";
+import HighchartsReact from "highcharts-react-official";
+
 import { HeatmapProps } from "./Heatmap.props";
+import { buildHeatmapOptions } from "../highchartsUtils";
+
+HighchartsHeatmap(Highcharts);
 
 export const HighchartsWidget = (props: HeatmapProps) => {
-  const { tableData, tableHeaders } = props;
+  const [options, setOptions] = useState<Highcharts.Options>();
 
-  const showColHeader = (item: string) => {
-    return <TableCell>{item}</TableCell>;
-  };
-
-  const showColHeaders = () => {
-    return (
-      <TableRow>{tableHeaders.map((header) => showColHeader(header))}</TableRow>
-    );
-  };
-
-  const showRowItem = (item: Array<string | number>) => {
-    return item.map((x) => <TableCell>{x}</TableCell>);
-  };
-
-  const showRowData = () => {
-    return tableData.map((x) => <TableRow>{showRowItem(x)}</TableRow>);
-  };
-
+  React.useEffect(() => {
+    const newOptions = buildHeatmapOptions(props);
+    setOptions(newOptions);
+  }, [props])
+  
   return (
     <Box>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>{showColHeaders()}</TableHead>
-          <TableBody>{showRowData()}</TableBody>
-        </Table>
-      </TableContainer>
+      {options && <HighchartsReact highcharts={Highcharts} options={options} />}
     </Box>
   );
 };

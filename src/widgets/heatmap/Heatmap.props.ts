@@ -1,4 +1,2 @@
-export interface HeatmapProps {
-  tableHeaders: Array<string>;
-  tableData: Array<Array<string | number>>;
-}
+import { BuildPartialOptions } from "../highchartsUtils"
+export type { BuildPartialOptions as HeatmapProps };
