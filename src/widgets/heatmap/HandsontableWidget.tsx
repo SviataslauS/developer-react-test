@@ -1,5 +1,7 @@
 import React from 'react';
 import { HotTable, HotTableProps } from '@handsontable/react';
+import Handsontable from 'handsontable';
+
 import 'handsontable/dist/handsontable.min.css';
 
 interface HeatmapProps {
@@ -9,29 +11,30 @@ interface HeatmapProps {
   maxValue: number;
 }
 
+
 export const HandsontableWidget: React.FC<HeatmapProps> = ({ tableHeaders, tableData, minValue, maxValue }) => {
-  const getCellMeta = (row: number, col: number) => {
-    if(col === 0 || !minValue || !maxValue){
-      return {};
+  const getCellRenderer = (_instance: Handsontable, TD: HTMLTableCellElement, row: number, col: number, prop: any, value: any) => {
+    TD.textContent = value;
+    if (!maxValue || !minValue || col === 0) {
+      return TD;
     }
 
-    const value = tableData[row][col] as number;
-    const max = maxValue;
-    const min = minValue;
-    const intensity = (value - min) / (max - min);
+    const intensity = Math.round(((value - minValue) / (maxValue - minValue)) * 100)/100;
     const color = `rgba(255, 0, 0, ${intensity})`;
-    return { style: { background: color } };
+    TD.style.backgroundColor = color;
+
+    return TD;
   };
 
   const hotTableProps: HotTableProps = {
     data: tableData,
     colHeaders: tableHeaders,
-    rowHeaders: true,
+    rowHeaders: false,
     stretchH: 'all',
-    cells: getCellMeta,
+    autoColumnSize: true,
+    cells: () => ({ className: 'heatmap-cell', renderer: getCellRenderer }),
     className: 'heatmap-table',
-    licenseKey: 'non-commercial-and-evaluation',
-};
+  };
 
   return <HotTable {...hotTableProps} />;
 };
