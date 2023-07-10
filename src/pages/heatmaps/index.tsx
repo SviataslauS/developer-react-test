@@ -50,20 +50,11 @@ export const HeatmapsPage = () => {
         <Typography variant="h5" sx={{ marginBottom: 1 }}>
           Handsontable Heatmap
         </Typography>
-        <Alert severity="warning">
-          Please modify the handsontable-widget so that it returns a heatmap
-          using &nbsp;
-          <Link
-            href="https://www.npmjs.com/package/handsontable"
-            target="_blank"
-            underline="hover"
-          >
-            handsontable
-          </Link>
-        </Alert>
         <HandsontableWidget
           tableHeaders={tableHeaders}
           tableData={tableData}
+          minValue={parsedData.minValue}
+          maxValue={parsedData.maxValue}
         />
       </Grid>
     </Grid>

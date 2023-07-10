@@ -1,49 +1,38 @@
-import React from "react";
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-
+import React from 'react';
+import { HotTable, HotTableProps } from '@handsontable/react';
+import 'handsontable/dist/handsontable.min.css';
 
 interface HeatmapProps {
   tableHeaders: Array<string>;
   tableData: Array<Array<string | number>>;
+  minValue: number;
+  maxValue: number;
 }
-export const HandsontableWidget = (props: HeatmapProps) => {
-  const { tableData, tableHeaders } = props;
 
-  const showColHeader = (item: string) => {
-    return <TableCell>{item}</TableCell>;
+export const HandsontableWidget: React.FC<HeatmapProps> = ({ tableHeaders, tableData, minValue, maxValue }) => {
+  const getCellMeta = (row: number, col: number) => {
+    if(col === 0 || !minValue || !maxValue){
+      return {};
+    }
+
+    const value = tableData[row][col] as number;
+    const max = maxValue;
+    const min = minValue;
+    const intensity = (value - min) / (max - min);
+    const color = `rgba(255, 0, 0, ${intensity})`;
+    return { style: { background: color } };
   };
 
-  const showColHeaders = () => {
-    return (
-      <TableRow>{tableHeaders.map((header) => showColHeader(header))}</TableRow>
-    );
-  };
-
-  const showRowItem = (item: Array<string | number>) => {
-    return item.map((x) => <TableCell>{x}</TableCell>);
-  };
-
-  const showRowData = () => {
-    return tableData.map((x) => <TableRow>{showRowItem(x)}</TableRow>);
-  };
-
-  return (
-    <Box>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>{showColHeaders()}</TableHead>
-          <TableBody>{showRowData()}</TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
-  );
+  const hotTableProps: HotTableProps = {
+    data: tableData,
+    colHeaders: tableHeaders,
+    rowHeaders: true,
+    stretchH: 'all',
+    cells: getCellMeta,
+    className: 'heatmap-table',
+    licenseKey: 'non-commercial-and-evaluation',
 };
+
+  return <HotTable {...hotTableProps} />;
+};
+
