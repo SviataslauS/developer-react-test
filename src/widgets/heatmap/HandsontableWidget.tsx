@@ -32,7 +32,7 @@ export const HandsontableWidget: React.FC<HeatmapProps> = ({ tableHeaders, table
     rowHeaders: false,
     stretchH: 'all',
     autoColumnSize: true,
-    cells: () => ({ className: 'heatmap-cell', renderer: getCellRenderer }),
+    cells: () => ({ readOnly: true, className: 'heatmap-cell', renderer: getCellRenderer }),
     className: 'heatmap-table',
   };
 

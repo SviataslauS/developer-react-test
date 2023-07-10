@@ -19,8 +19,8 @@ const getDefaultOptions = (type: string): Highcharts.Options => ({
       reversed: true,
     },
     colorAxis: {
-      minColor: '#FF0000',
-      maxColor: '#0000FF',
+      minColor: '#FFFFFF',
+      maxColor: '#FF0000',
     },
     series: [
       {
