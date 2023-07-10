@@ -13,7 +13,7 @@ interface HeatmapProps {
 
 
 export const HandsontableWidget: React.FC<HeatmapProps> = ({ tableHeaders, tableData, minValue, maxValue }) => {
-  const getCellRenderer = (_instance: Handsontable, TD: HTMLTableCellElement, row: number, col: number, prop: any, value: any) => {
+  const getCellRenderer = React.useCallback((_instance: Handsontable, TD: HTMLTableCellElement, row: number, col: number, prop: any, value: any) => {
     TD.textContent = value;
     if (!maxValue || !minValue || col === 0) {
       return TD;
@@ -24,17 +24,18 @@ export const HandsontableWidget: React.FC<HeatmapProps> = ({ tableHeaders, table
     TD.style.backgroundColor = color;
 
     return TD;
-  };
+  }, [minValue, maxValue]);
 
-  const hotTableProps: HotTableProps = {
+  const hotTableProps: HotTableProps = React.useMemo(() => ({
     data: tableData,
     colHeaders: tableHeaders,
     rowHeaders: false,
     stretchH: 'all',
     autoColumnSize: true,
-    cells: () => ({ readOnly: true, className: 'heatmap-cell', renderer: getCellRenderer }),
+    cells: () => ({ readOnly: true, renderer: getCellRenderer }),
     className: 'heatmap-table',
-  };
+    licenseKey: 'non-commercial-and-evaluation'
+  }), [tableData, tableHeaders, getCellRenderer]);
 
   return <HotTable {...hotTableProps} />;
 };
